@@ -28,6 +28,12 @@
                         <img src="images/settings.png">
                         <p>Settings</p>
                     </a>
+                    <?php if ($userRole == 'teacher'): ?>
+                        <a href="teacher-add-course.php" class="submenulink">
+                            <img src="images/settings.png">
+                            <p>Add Course</p>
+                        </a>
+                    <?php endif; ?>
                     <?php if ($userRole == 'admin'): ?>
                         <a href="admin-categories.php" class="submenulink">
                             <img src="images/settings.png">

@@ -50,4 +50,8 @@ footer {
 }
 #home-page .tabs-link {
   gap: 20px;
+}
+
+#add-course textarea {
+  resize: none;
 }/*# sourceMappingURL=custom.css.map */

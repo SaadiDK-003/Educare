@@ -158,9 +158,7 @@ require_once '../core/database.php';
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 Learning Platform. All rights reserved.</p>
-    </footer>
+    <?php include './includes/footer.php'; ?>
 
 
     <?php include_once './includes/js_links.php'; ?>

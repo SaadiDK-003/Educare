@@ -67,9 +67,7 @@ if (is_loggedin() === false) {
             </section>
         </div>
     </div>
-    <footer>
-        <p class="mb-0">&copy; 2024 Learning Platform. All rights reserved.</p>
-    </footer>
+    <?php include './includes/footer.php'; ?>
 
 
 

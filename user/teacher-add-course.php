@@ -1,7 +1,7 @@
 <?php
 require_once '../core/database.php';
 
-if ($userRole != 'admin') {
+if ($userRole == 'student') {
     header('Location: index.php');
 }
 ?>
@@ -12,7 +12,7 @@ if ($userRole != 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Manage Categories</title>
+    <title>Teacher - Manage Course</title>
     <?php include_once './includes/style_links.php'; ?>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="style.css">
@@ -21,31 +21,50 @@ if ($userRole != 'admin') {
 
 <body>
 
-<?php include './includes/header.php'; ?>
+    <?php include './includes/header.php'; ?>
 
     <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-6 text-center">
-                <h1>Manage Categories</h1>
+                <h1>Manage Courses</h1>
             </div>
             <div class="col-6 text-center">
                 <a href="index.php" class="btn btn-secondary">Back</a>
             </div>
         </div>
         <hr>
-        <form action="" method="post">
+        <form id="add-course" action="" method="post">
             <div class="row">
                 <div class="col-4 mx-auto">
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="category_name">Add Category</label>
-                                <input type="text" name="category_name" id="category_name" class="form-control">
+                                <label for="category">Select Category</label>
+                                <select class="form-control" name="category" id="category">
+                                    <?php
+                                    $cat_list_Q = $con->query("SELECT * FROM `categories`");
+                                    while ($cat_list = mysqli_fetch_object($cat_list_Q)):
+                                    ?>
+                                        <option value="<?= $cat_list->id ?>"><?= $cat_list->category_name ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="course-name">Course Name</label>
+                                <input type="text" name="course_name" id="course-name" class="form-control" placeholder="HTML & CSS Basics" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="course-desc">Course Description</label>
+                                <textarea rows="4" name="course_desc" id="course-desc" class="form-control" placeholder="Description about the course." required></textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group text-center">
-                                <button type="submit" name="submit" class="btn btn-primary">Add Category</button>
+                                <button type="submit" name="submit" class="btn btn-primary">Add Course</button>
                             </div>
                         </div>
                         <div class="col-12">

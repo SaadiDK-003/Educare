@@ -21,8 +21,20 @@ h5 {
   font-family: var(--josh);
   font-weight: 600;
 }
+a,
+p,
+span,
+label {
+  font-family: var(--raleway);
+  font-weight: 500;
+}
 
-header {
+// DataTable
+table.dataTable th.dt-type-numeric,
+table.dataTable th.dt-type-date,
+table.dataTable td.dt-type-numeric,
+table.dataTable td.dt-type-date {
+  text-align: center;
 }
 
 footer {

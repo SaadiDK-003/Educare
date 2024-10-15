@@ -1,10 +1,17 @@
+<?php
+require_once '../core/database.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses - Learning Platform</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional: link to a CSS file -->
+    <?php include_once './includes/style_links.php'; ?>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/custom.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,12 +19,7 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-        header {
-            background:rgb(230, 209, 115); 
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+
         .container {
             display: flex;
             max-width: 1200px;
@@ -27,15 +29,18 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .sidebar {
             flex: 1;
             padding: 20px;
             border-right: 1px solid #ddd;
         }
+
         .content {
             flex: 3;
             padding: 20px;
         }
+
         .course-card {
             background: #e9ecef;
             padding: 15px;
@@ -43,52 +48,29 @@
             border-radius: 5px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        h2 {
-            color: #333;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #333;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-        ul li a {
-            color:chocolate;
-        }
-       header a {
-        color :white;
-        text-decoration: none;
-        font-size: 25px;
-        padding-right: 3%;
-        margin-right: 2%;
-       }
-       header div{
-        text-align: right;
-       }
-       
-
     </style>
 </head>
-<body>
 
-    <header>
-        <h1>Courses </h1>
-        <div>
-        <h2><a href ="homepage.html"> Home</a>          <a href ="testsettings.html"> Settings</a></h2>  </div>
-    </header>
+<body>
+    <?php include './includes/header.php'; ?>
+
     <div class="container">
         <div class="sidebar">
             <h2>Categories</h2>
             <ul>
-                <li><a href="#web-development">Web Development</a></li>
+                <?php
+                $list_cat_Q = $con->query("SELECT * FROM `categories`");
+                while ($list_cat = mysqli_fetch_object($list_cat_Q)):
+                ?>
+                    <li><a href="#<?= $list_cat->category_name ?>"><?= $list_cat->category_name ?></a></li>
+                <?php endwhile; ?>
+
+                <!-- <li><a href="#web-development">Web Development</a></li>
                 <li><a href="#data-science">Data Science</a></li>
                 <li><a href="#digital-marketing">Digital Marketing</a></li>
                 <li><a href="#graphic-design">Graphic Design</a></li>
                 <li><a href="#artifical-intellegence">Artifical Intelligence</a></li>
-                <li><a href="#software-engineering">Software Engineering</a></li>
+                <li><a href="#software-engineering">Software Engineering</a></li> -->
             </ul>
         </div>
 
@@ -112,13 +94,13 @@
                 <div class="course-card">
                     <h3>Python for Data Analysis</h3>
                     <p>Learn how to use Python for data analysis and visualization.</p>
-                   
+
                     <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
                 </div>
                 <div class="course-card">
                     <h3>Machine Learning Essentials</h3>
                     <p>An introduction to machine learning concepts and techniques.</p>
-                  
+
                     <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
                 </div>
             </section>
@@ -131,12 +113,12 @@
                     <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
                 </div>
             </section>
-                <div class="course-card">
-                    <h3>Social Media Marketing</h3>
-                    <p>Master the techniques of effective social media marketing.</p>
-                  
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
+            <div class="course-card">
+                <h3>Social Media Marketing</h3>
+                <p>Master the techniques of effective social media marketing.</p>
+
+                <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
+            </div>
             </section>
 
             <section id="graphic-design">
@@ -144,35 +126,35 @@
                 <div class="course-card">
                     <h3>Design Basics with Photoshop</h3>
                     <p>Learn the essentials of graphic design using Adobe Photoshop.</p>
-                  
+
                     <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
                 </div>
                 <section id="graphic-design">
-                <div class="course-card">
-                    <h3>Illustration Techniques</h3>
-                    <p>Evreything about illustration techniques and styles .</p>
-                    
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-            </section>
-            <section id="artifical-intellegence">
-                <h2>Artifical Intellegence</h2>
-            <div class="course-card">
-                <h3>Artifical Intellegence</h3>
-                <p>Evreything about AI .</p>
-                
-                <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-            </div>
-            </section>
+                    <div class="course-card">
+                        <h3>Illustration Techniques</h3>
+                        <p>Evreything about illustration techniques and styles .</p>
+
+                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
+                    </div>
+                </section>
+                <section id="artifical-intellegence">
+                    <h2>Artifical Intellegence</h2>
+                    <div class="course-card">
+                        <h3>Artifical Intellegence</h3>
+                        <p>Evreything about AI .</p>
+
+                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
+                    </div>
+                </section>
                 <section id="software-engineering">
                     <h2>Software Engineering</h2>
-                <div class="course-card">
-                    <h3>Software Engineering</h3>
-                    <p>Evreything about Software Engineering .</p>
-                    
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-            </section>
+                    <div class="course-card">
+                        <h3>Software Engineering</h3>
+                        <p>Evreything about Software Engineering .</p>
+
+                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
+                    </div>
+                </section>
         </div>
     </div>
 
@@ -180,5 +162,8 @@
         <p>&copy; 2024 Learning Platform. All rights reserved.</p>
     </footer>
 
+
+    <?php include_once './includes/js_links.php'; ?>
 </body>
+
 </html>

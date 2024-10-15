@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 02:02 AM
+-- Generation Time: Oct 15, 2024 at 03:54 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -68,6 +68,18 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `category_name`) VALUES
+(1, 'Web Development'),
+(2, 'Data Science'),
+(3, 'Digital Marketing'),
+(4, 'Graphic Design'),
+(5, 'Artifical Intelligence'),
+(6, 'Software Engineering');
 
 -- --------------------------------------------------------
 
@@ -242,7 +254,7 @@ ALTER TABLE `assit`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `courset`

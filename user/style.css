@@ -89,10 +89,9 @@ nav .user-wrapper a {
   align-items: center;
   text-decoration: none;
   color: black;
-  margin: 12px 0;
 }
 .submenulink p {
-  width: 100%;
+  margin-bottom: 0;
 }
 .submenulink img {
   width: 40px;
@@ -105,10 +104,10 @@ nav .user-wrapper a {
   font-size: 22px;
   transition: transform 0.5s;
 }
-.submenulink: hover span {
+.submenulink:hover span {
   transform: translateX(5px);
 }
-.submenulink: hover p {
+.submenulink:hover p {
   font-weight: 600;
 }
 .fcontainer {
@@ -174,13 +173,9 @@ nav .user-wrapper a {
   border-radius: 5px;
   font-size: 20px;
 }
-background-image: url("images/backk.jpg");
+/* background-image: url("images/backk.jpg");
 background-repeat: no-repeat;
-background-size: cover;
-body {
-  background-color: beige;
-  margin-top: 20px;
-}
+background-size: cover; */
 
 .ui-w-80 {
   width: 80px !important;

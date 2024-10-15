@@ -7,6 +7,7 @@ $con = mysqli_connect(HOST, USER, PWD, DB);
 $userID = 0;
 $userFullName = '';
 $userEmail = '';
+$userRole = '';
 
 require_once 'functions.php';
 
@@ -16,4 +17,5 @@ if (isset($_SESSION['user'])):
     $currentUser = mysqli_fetch_object($currentUserQ);
     $userFullName = $currentUser->fname . '-' . $currentUser->lname;
     $userEmail = $currentUser->email;
+    $userRole = $currentUser->user_type;
 endif;

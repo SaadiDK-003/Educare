@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings - Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: rgb(230, 209, 115);;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], select {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: rgb(230, 209, 115);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: rgb(230, 209, 115);
+        }
+        img{
+            width: 30px;
+        }
+        a{
+            color: chocolate;
+            text-decoration: none;
+            font-size: 20px;
+            padding:1%; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1><img src="images/settings.png" >  Admin Settings </h1>
+
+        <div class="section">
+            <h2>User Management</h2>
+            <label for="user-email">Add User (Email):</label>
+            <input type="email" id="user-email" placeholder="Enter user email">
+            <button>Add User</button>
+
+            <h3>Existing Users</h3>
+            <ul>
+                <li>User1@example.com <button>Remove</button></li>
+                <li>User2@example.com <button>Remove</button></li>
+                <li>User3@example.com <button>Remove</button></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Course Settings</h2>
+            <label for="course-name">Course Name:</label>
+            <input type="text" id="course-name" placeholder="Enter course name">
+            <label for="course-description">Course Description:</label>
+            <textarea id="course-description" rows="4" placeholder="Enter course description"></textarea>
+            <button>Create Course</button>
+        </div>
+
+        <div class="section">
+            <h2>Notification Settings</h2>
+            <label for="notification-email">Notification Email:</label>
+            <input type="email" id="notification-email" placeholder="Enter admin email for notifications">
+            <label for="notification-frequency">Notification Frequency:</label>
+            <select id="notification-frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+            <button>Save Settings</button>
+        </div>
+
+        <div class="section">
+            <h2>Account Security</h2>
+            <label for="admin-password">Change Password:</label>
+            <input type="password" id="admin-password" placeholder="New password">
+            <button>Update Password</button>
+        </div>
+        <a href="assignmentsadmin.html"> Assignment Settings</a> <a href="admintests.html"> Test Settings </a>
+        <a href="adminTeacher.html" > Teachers Settings</a><a href="homepage.html">Back ></a>
+
+        </div>
+
+</body>
+</html>

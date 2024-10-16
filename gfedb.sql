@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2024 at 03:38 AM
+-- Generation Time: Oct 16, 2024 at 11:41 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -34,6 +34,19 @@ FROM courses c
 INNER JOIN categories cat
 ON c.cat_id = cat.id
 ORDER BY cat.category_name, c.course_title$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_teachers` ()  SELECT
+    u.fname,
+    u.lname,
+    u.email,
+    u.bio,
+    GROUP_CONCAT(cat.category_name SEPARATOR ' | ') AS category_names
+FROM
+    users u
+INNER JOIN courses c ON u.id = c.teacher_Id
+INNER JOIN categories cat ON c.cat_id = cat.id
+GROUP BY
+    u.id$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_courses_by_teacher_id` (IN `teacher_id` INT)  SELECT
 c.id AS 'course_id',
@@ -116,6 +129,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `user_type` enum('admin','teacher','student') NOT NULL DEFAULT 'student',
+  `bio` text DEFAULT NULL,
   `course_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -123,10 +137,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `course_id`) VALUES
-(1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL),
-(3, 'teacher1', 'abc', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL),
-(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL);
+INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `bio`, `course_id`) VALUES
+(1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL, NULL),
+(3, 'teacher1', 'abc', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', 'I am teaching since 2018', NULL),
+(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -143,8 +157,8 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `courses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `cat_id` (`cat_id`),
-  ADD KEY `teacher_Id` (`teacher_Id`);
+  ADD KEY `teacher_Id` (`teacher_Id`),
+  ADD KEY `courses_ibfk_1` (`cat_id`);
 
 --
 -- Indexes for table `users`
@@ -160,13 +174,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -182,7 +196,7 @@ ALTER TABLE `users`
 -- Constraints for table `courses`
 --
 ALTER TABLE `courses`
-  ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`),
+  ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`teacher_Id`) REFERENCES `users` (`id`);
 COMMIT;
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 03:54 AM
+-- Generation Time: Oct 16, 2024 at 03:38 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -21,42 +21,41 @@ SET time_zone = "+00:00";
 -- Database: `gfedb`
 --
 
--- --------------------------------------------------------
-
+DELIMITER $$
 --
--- Table structure for table `admint`
+-- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_courses` ()  SELECT
+c.id AS 'course_id',
+c.course_title,
+c.course_desc,
+cat.category_name 
+FROM courses c
+INNER JOIN categories cat
+ON c.cat_id = cat.id
+ORDER BY cat.category_name, c.course_title$$
 
-CREATE TABLE `admint` (
-  `Admin_ID` int(11) NOT NULL,
-  `Admin_Fname` varchar(30) NOT NULL,
-  `Admin_Lname` varchar(30) NOT NULL,
-  `Admin_Email` varchar(70) NOT NULL,
-  `Admin_Pass` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_courses_by_teacher_id` (IN `teacher_id` INT)  SELECT
+c.id AS 'course_id',
+c.course_title,
+c.course_desc,
+c.cat_id
+FROM courses c
+INNER JOIN users u
+WHERE c.teacher_Id=u.id AND c.teacher_Id=teacher_id$$
 
---
--- Dumping data for table `admint`
---
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_course_by_cat_id` (IN `cat_id` INT)  SELECT
+c.id AS 'course_id',
+c.course_title,
+c.course_desc,
+cat.category_name
+FROM courses c
+INNER JOIN categories cat
+ON c.cat_id = cat.id
+WHERE c.cat_id=cat_id
+ORDER BY cat.category_name, c.course_title$$
 
-INSERT INTO `admint` (`Admin_ID`, `Admin_Fname`, `Admin_Lname`, `Admin_Email`, `Admin_Pass`) VALUES
-(11111, 'Ghaida', 'Alghamdi', 'Ghaida@gmail.com', 'Ghaida1234');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `assit`
---
-
-CREATE TABLE `assit` (
-  `Assi_ID` int(11) NOT NULL,
-  `Assi_Title` varchar(60) NOT NULL,
-  `Assi_Des` varchar(70) DEFAULT NULL,
-  `Assi_File` varchar(100) NOT NULL,
-  `Student_ID` int(11) DEFAULT NULL,
-  `Teacher_ID` int(11) DEFAULT NULL,
-  `Course_ID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -84,72 +83,25 @@ INSERT INTO `categories` (`id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `courset`
+-- Table structure for table `courses`
 --
 
-CREATE TABLE `courset` (
-  `Course_ID` int(11) NOT NULL,
-  `Course_Title` varchar(60) NOT NULL,
-  `Admin_ID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `studentt`
---
-
-CREATE TABLE `studentt` (
-  `Student_ID` int(11) NOT NULL,
-  `Student_Fname` varchar(20) NOT NULL,
-  `Student_Lname` varchar(20) NOT NULL,
-  `Student_Email` varchar(60) NOT NULL,
-  `Student_Pass` varchar(30) NOT NULL
+CREATE TABLE `courses` (
+  `id` int(11) NOT NULL,
+  `course_title` varchar(255) NOT NULL,
+  `course_desc` text NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `teacher_Id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `studentt`
+-- Dumping data for table `courses`
 --
 
-INSERT INTO `studentt` (`Student_ID`, `Student_Fname`, `Student_Lname`, `Student_Email`, `Student_Pass`) VALUES
-(1, 'Lana', 'Alghamdi', 'Lana@g.com', 'Lana1234'),
-(2, 'Rahaf', 'Alghamdi', 'Rahaf@x.com', 'Rahaf1234'),
-(21, 'Ahmed', 'Alghamdi', 'Ahmed@x.com', 'Ahmed1234'),
-(22, 'Amal', 'Alghamdi', 'Amal@gmail.com', 'Amal1234'),
-(23, 'Amal', 'Student_Lname', 'Student_Email', 'Amal1234'),
-(24, 'Amal', 'Student_Lname', 'Student_Email', 'Amal1234'),
-(25, 'Amal', 'Alghamdi', 'Amal@gmail.com', 'Amal1234');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `teacher`
---
-
-CREATE TABLE `teacher` (
-  `Teacher_ID` int(11) NOT NULL,
-  `Teacher_Fname` varchar(60) NOT NULL,
-  `Teacher_Lname` varchar(60) NOT NULL,
-  `Teacher_Email` varchar(80) NOT NULL,
-  `Teacher_Pass` varchar(30) NOT NULL,
-  `Course_ID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `testt`
---
-
-CREATE TABLE `testt` (
-  `Test_ID` int(11) NOT NULL,
-  `Test_Title` varchar(60) NOT NULL,
-  `Test_Des` varchar(70) DEFAULT NULL,
-  `Test_File` varchar(100) NOT NULL,
-  `Student_ID` int(11) DEFAULT NULL,
-  `Teacher_ID` int(11) DEFAULT NULL,
-  `Course_ID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_Id`) VALUES
+(2, 'HTML & CSS Basics', 'Learn HTML & CSS with very easy step by step tutorials.', 1, 3),
+(15, 'Vector Arts Basics', 'Learn Vector arts and kjaslkdjlkjlkasd klajsdklaj klasjdlkasdj lkasjdklasjdklsadjaslkdasldkasljdkl', 4, 3),
+(16, 'JavaScript Basics', 'Learn JS', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -172,26 +124,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `course_id`) VALUES
-(1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL);
+(1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL),
+(3, 'teacher1', 'abc', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL),
+(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `admint`
---
-ALTER TABLE `admint`
-  ADD PRIMARY KEY (`Admin_ID`);
-
---
--- Indexes for table `assit`
---
-ALTER TABLE `assit`
-  ADD PRIMARY KEY (`Assi_ID`),
-  ADD KEY `Student_ID` (`Student_ID`),
-  ADD KEY `Teacher_ID` (`Teacher_ID`),
-  ADD KEY `Course_ID` (`Course_ID`);
 
 --
 -- Indexes for table `categories`
@@ -200,33 +139,12 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `courset`
+-- Indexes for table `courses`
 --
-ALTER TABLE `courset`
-  ADD PRIMARY KEY (`Course_ID`),
-  ADD KEY `Admin_ID` (`Admin_ID`);
-
---
--- Indexes for table `studentt`
---
-ALTER TABLE `studentt`
-  ADD PRIMARY KEY (`Student_ID`);
-
---
--- Indexes for table `teacher`
---
-ALTER TABLE `teacher`
-  ADD PRIMARY KEY (`Teacher_ID`),
-  ADD KEY `Course_ID` (`Course_ID`);
-
---
--- Indexes for table `testt`
---
-ALTER TABLE `testt`
-  ADD PRIMARY KEY (`Test_ID`),
-  ADD KEY `Student_ID` (`Student_ID`),
-  ADD KEY `Teacher_ID` (`Teacher_ID`),
-  ADD KEY `Course_ID` (`Course_ID`);
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cat_id` (`cat_id`),
+  ADD KEY `teacher_Id` (`teacher_Id`);
 
 --
 -- Indexes for table `users`
@@ -239,84 +157,33 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `admint`
---
-ALTER TABLE `admint`
-  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11113;
-
---
--- AUTO_INCREMENT for table `assit`
---
-ALTER TABLE `assit`
-  MODIFY `Assi_ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `courset`
+-- AUTO_INCREMENT for table `courses`
 --
-ALTER TABLE `courset`
-  MODIFY `Course_ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `studentt`
---
-ALTER TABLE `studentt`
-  MODIFY `Student_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
---
--- AUTO_INCREMENT for table `teacher`
---
-ALTER TABLE `teacher`
-  MODIFY `Teacher_ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `testt`
---
-ALTER TABLE `testt`
-  MODIFY `Test_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `courses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `assit`
+-- Constraints for table `courses`
 --
-ALTER TABLE `assit`
-  ADD CONSTRAINT `assit_ibfk_1` FOREIGN KEY (`Student_ID`) REFERENCES `studentt` (`Student_ID`),
-  ADD CONSTRAINT `assit_ibfk_2` FOREIGN KEY (`Teacher_ID`) REFERENCES `teacher` (`Teacher_ID`),
-  ADD CONSTRAINT `assit_ibfk_3` FOREIGN KEY (`Course_ID`) REFERENCES `courset` (`Course_ID`);
-
---
--- Constraints for table `courset`
---
-ALTER TABLE `courset`
-  ADD CONSTRAINT `courset_ibfk_1` FOREIGN KEY (`Admin_ID`) REFERENCES `admint` (`Admin_ID`);
-
---
--- Constraints for table `teacher`
---
-ALTER TABLE `teacher`
-  ADD CONSTRAINT `teacher_ibfk_1` FOREIGN KEY (`Course_ID`) REFERENCES `courset` (`Course_ID`);
-
---
--- Constraints for table `testt`
---
-ALTER TABLE `testt`
-  ADD CONSTRAINT `testt_ibfk_1` FOREIGN KEY (`Student_ID`) REFERENCES `studentt` (`Student_ID`),
-  ADD CONSTRAINT `testt_ibfk_2` FOREIGN KEY (`Teacher_ID`) REFERENCES `teacher` (`Teacher_ID`),
-  ADD CONSTRAINT `testt_ibfk_3` FOREIGN KEY (`Course_ID`) REFERENCES `courset` (`Course_ID`);
+ALTER TABLE `courses`
+  ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`),
+  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`teacher_Id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

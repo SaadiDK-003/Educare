@@ -62,7 +62,7 @@ require_once '../core/database.php';
                 $list_cat_Q = $con->query("SELECT * FROM `categories`");
                 while ($list_cat = mysqli_fetch_object($list_cat_Q)):
                 ?>
-                    <li><a data-id="<?= $list_cat->id ?>" class="btn btn-outline-warning font-weight-bold w-75 my-2" href="#<?= $list_cat->category_name ?>"><?= $list_cat->category_name ?></a></li>
+                    <li><a data-id="<?= $list_cat->id ?>" class="btn btn-warning font-weight-bold w-75 my-2" href="#<?= $list_cat->category_name ?>"><?= $list_cat->category_name ?></a></li>
                 <?php endwhile; ?>
             </ul>
         </div>

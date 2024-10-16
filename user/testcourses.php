@@ -92,6 +92,7 @@ require_once '../core/database.php';
             $(document).on('click', '.sidebar ul li a', function(e) {
                 e.preventDefault();
                 let id = $(this).data('id');
+                $(this).addClass('active').parent('li').siblings().find('a').removeClass('active');
                 $.ajax({
                     url: 'ajax/courses.php',
                     method: 'post',

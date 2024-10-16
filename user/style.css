@@ -59,6 +59,7 @@ header nav .user-wrapper a {
   max-height: 0px;
   overflow: hidden;
   transition: max-height 0.5s;
+  z-index: 5;
 }
 .submenuwopen {
   max-height: 400px;

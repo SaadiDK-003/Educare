@@ -45,6 +45,7 @@ header nav ul li a {
   color: black;
   text-decoration: none;
   font-size: 28px;
+  font-weight: 600;
 }
 header nav .user-wrapper a {
   color: #000;
@@ -92,6 +93,7 @@ header nav .user-wrapper a {
 }
 .submenulink p {
   margin-bottom: 0;
+  font-weight: 500;
 }
 .submenulink img {
   width: 40px;

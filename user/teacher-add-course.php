@@ -39,19 +39,6 @@ if ($userRole == 'student') {
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="category">Select Category</label>
-                                <select class="form-control" name="category" id="category">
-                                    <?php
-                                    $cat_list_Q = $con->query("SELECT * FROM `categories`");
-                                    while ($cat_list = mysqli_fetch_object($cat_list_Q)):
-                                    ?>
-                                        <option value="<?= $cat_list->id ?>"><?= $cat_list->category_name ?></option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
                                 <label for="course-name">Course Name</label>
                                 <input type="text" name="course_name" id="course-name" class="form-control" placeholder="HTML & CSS Basics" required>
                             </div>
@@ -63,25 +50,44 @@ if ($userRole == 'student') {
                             </div>
                         </div>
                         <div class="col-12">
+                            <div class="form-group">
+                                <label for="category">Select Category</label>
+                                <select class="form-control" name="category" id="category" required>
+                                    <option value="" selected hidden>Select Course Category</option>
+                                    <?php
+                                    $cat_list_Q = $con->query("SELECT * FROM `categories`");
+                                    while ($cat_list = mysqli_fetch_object($cat_list_Q)):
+                                    ?>
+                                        <option value="<?= $cat_list->id ?>"><?= $cat_list->category_name ?></option>
+                                    <?php endwhile;
+                                    $cat_list_Q->close();
+                                    $con->next_result(); ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="form-group text-center">
                                 <button type="submit" name="submit" class="btn btn-primary">Add Course</button>
                             </div>
                         </div>
                         <div class="col-12">
                             <?php
-                            if (isset($_POST['submit']) && isset($_POST['category_name'])):
-                                $cat_name = $_POST['category_name'];
-                                $add_cat_Q = $con->query("INSERT INTO `categories` (category_name) VALUES('$cat_name')");
-                                if ($add_cat_Q) {
-                                    echo '<h5 class="alert alert-success">Category has been added.</h5>
+                            if (isset($_POST['course_name']) && isset($_POST['course_desc'])):
+                                $course_title = $_POST['course_name'];
+                                $course_desc = $_POST['course_desc'];
+                                $category = $_POST['category'];
+                                $add_course_Q = $con->query("INSERT INTO `courses` (course_title,course_desc,cat_id,teacher_id) VALUES('$course_title','$course_desc','$category','$userID')");
+                                if ($add_course_Q) {
+                                    echo '<h5 class="alert alert-success">' . $course_title . ' has been added.</h5>
                                         <script>
                                             setTimeout(function(){
-                                                window.location.href = "' . SITE_URL . 'user/admin-categories.php"
+                                                window.location.href = "' . SITE_URL . 'user/teacher-add-course.php"
                                             },1800);
                                         </script>
                                     ';
                                 }
                             endif;
+                            $con->next_result();
                             ?>
                         </div>
                     </div>
@@ -89,32 +95,36 @@ if ($userRole == 'student') {
             </div>
         </form>
         <div class="row my-5">
-            <div class="col-6 mx-auto">
+            <div class="col-12 mx-auto">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Category</th>
-                            <th class="text-center">Action</th>
+                            <th class="text-center font-weight-bold">ID</th>
+                            <th class="text-center font-weight-bold">Course Title</th>
+                            <th class="text-center font-weight-bold">Course Desc</th>
+                            <th class="text-center font-weight-bold">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $catQ = $con->query("SELECT * FROM `categories`");
-                        while ($cat = mysqli_fetch_object($catQ)):
+                        $course_Q = $con->query("CALL `get_courses_by_teacher_id`($userID)");
+                        while ($course_list = mysqli_fetch_object($course_Q)):
                         ?>
                             <tr>
-                                <td><?= $cat->id ?></td>
-                                <td><?= $cat->category_name ?></td>
+                                <th><?= $course_list->course_id ?></th>
+                                <td><?= $course_list->course_title ?></td>
+                                <td><?= $course_list->course_desc ?></td>
                                 <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $cat->id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $course_list->course_id ?>">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $cat->id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $course_list->course_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
-                        <?php endwhile; ?>
+                        <?php endwhile;
+                        $course_Q->close();
+                        $con->next_result(); ?>
                     </tbody>
                 </table>
             </div>

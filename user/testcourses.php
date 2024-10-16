@@ -57,104 +57,18 @@ require_once '../core/database.php';
     <div class="container">
         <div class="sidebar">
             <h2>Categories</h2>
-            <ul>
+            <ul class="list-unstyled">
                 <?php
                 $list_cat_Q = $con->query("SELECT * FROM `categories`");
                 while ($list_cat = mysqli_fetch_object($list_cat_Q)):
                 ?>
-                    <li><a href="#<?= $list_cat->category_name ?>"><?= $list_cat->category_name ?></a></li>
+                    <li><a data-id="<?= $list_cat->id ?>" class="btn btn-outline-warning font-weight-bold w-75 my-2" href="#<?= $list_cat->category_name ?>"><?= $list_cat->category_name ?></a></li>
                 <?php endwhile; ?>
-
-                <!-- <li><a href="#web-development">Web Development</a></li>
-                <li><a href="#data-science">Data Science</a></li>
-                <li><a href="#digital-marketing">Digital Marketing</a></li>
-                <li><a href="#graphic-design">Graphic Design</a></li>
-                <li><a href="#artifical-intellegence">Artifical Intelligence</a></li>
-                <li><a href="#software-engineering">Software Engineering</a></li> -->
             </ul>
         </div>
 
-        <div class="content">
-            <section id="web-development">
-                <h2>Web Development</h2>
-                <div class="course-card">
-                    <h3>HTML & CSS Basics</h3>
-                    <p>Learn the fundamentals of HTML and CSS to build your first website.</p>
-                    <a href="userassiandtest.html" style="color:rgb(230, 209, 115) ;">Enter</a>
-                </div>
-                <div class="course-card">
-                    <h3>JavaScript for Beginners</h3>
-                    <p>Understand the basics of JavaScript and how to add interactivity to your web pages.</p>
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-            </section>
-
-            <section id="data-science">
-                <h2>Data Science</h2>
-                <div class="course-card">
-                    <h3>Python for Data Analysis</h3>
-                    <p>Learn how to use Python for data analysis and visualization.</p>
-
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-                <div class="course-card">
-                    <h3>Machine Learning Essentials</h3>
-                    <p>An introduction to machine learning concepts and techniques.</p>
-
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-            </section>
-
-            <section id="digital-marketing">
-                <h2>Digital Marketing</h2>
-                <div class="course-card">
-                    <h3>SEO Strategies</h3>
-                    <p>Learn how to optimize your website for search engines.</p>
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-            </section>
-            <div class="course-card">
-                <h3>Social Media Marketing</h3>
-                <p>Master the techniques of effective social media marketing.</p>
-
-                <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-            </div>
-            </section>
-
-            <section id="graphic-design">
-                <h2>Graphic Design</h2>
-                <div class="course-card">
-                    <h3>Design Basics with Photoshop</h3>
-                    <p>Learn the essentials of graphic design using Adobe Photoshop.</p>
-
-                    <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                </div>
-                <section id="graphic-design">
-                    <div class="course-card">
-                        <h3>Illustration Techniques</h3>
-                        <p>Evreything about illustration techniques and styles .</p>
-
-                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                    </div>
-                </section>
-                <section id="artifical-intellegence">
-                    <h2>Artifical Intellegence</h2>
-                    <div class="course-card">
-                        <h3>Artifical Intellegence</h3>
-                        <p>Evreything about AI .</p>
-
-                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                    </div>
-                </section>
-                <section id="software-engineering">
-                    <h2>Software Engineering</h2>
-                    <div class="course-card">
-                        <h3>Software Engineering</h3>
-                        <p>Evreything about Software Engineering .</p>
-
-                        <a href="userassiandtest.html" style="color: rgb(230, 209, 115); ">Enter</a>
-                    </div>
-                </section>
+        <div id="fetch_courses" class="content">
+            <span>Loading...</span>
         </div>
     </div>
 
@@ -162,6 +76,39 @@ require_once '../core/database.php';
 
 
     <?php include_once './includes/js_links.php'; ?>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'ajax/courses.php',
+                beforeSend: function() {
+
+                },
+                success: function(res) {
+                    $("#fetch_courses").html(res);
+                }
+            });
+
+            $(document).on('click', '.sidebar ul li a', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: 'ajax/courses.php',
+                    method: 'post',
+                    beforeSend: function() {
+                        $("#fetch_courses").html('<span>Loading...</span>');
+                    },
+                    data: {
+                        course_id: id
+                    },
+                    success: function(res) {
+                        $("#fetch_courses").html(res);
+                    }
+                })
+            });
+        });
+    </script>
+
 </body>
 
 </html>

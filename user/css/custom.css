@@ -26,7 +26,10 @@ p,
 span,
 label {
   font-family: var(--raleway);
-  font-weight: 500;
+}
+
+form label {
+  font-weight: 600;
 }
 
 table.dataTable th.dt-type-numeric,
@@ -54,4 +57,17 @@ footer {
 
 #add-course textarea {
   resize: none;
+}
+
+#fetch_courses {
+  min-height: 650px;
+  position: relative;
+}
+#fetch_courses span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: 600;
 }/*# sourceMappingURL=custom.css.map */

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2024 at 11:41 AM
+-- Generation Time: Oct 17, 2024 at 12:05 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -119,6 +119,21 @@ INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_I
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tests`
+--
+
+CREATE TABLE `tests` (
+  `id` int(11) NOT NULL,
+  `test_title` varchar(255) NOT NULL,
+  `test_desc` varchar(255) NOT NULL,
+  `test_file` text NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -140,7 +155,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `bio`, `course_id`) VALUES
 (1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL, NULL),
 (3, 'teacher1', 'abc', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', 'I am teaching since 2018', NULL),
-(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL, NULL);
+(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL, NULL),
+(5, 'student', 'abcc', 'student@gmail.com', '4297f44b13955235245b2497399d7a93', 'student', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -159,6 +175,14 @@ ALTER TABLE `courses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `teacher_Id` (`teacher_Id`),
   ADD KEY `courses_ibfk_1` (`cat_id`);
+
+--
+-- Indexes for table `tests`
+--
+ALTER TABLE `tests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `course_id` (`course_id`);
 
 --
 -- Indexes for table `users`
@@ -180,13 +204,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `tests`
+--
+ALTER TABLE `tests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -198,6 +228,13 @@ ALTER TABLE `users`
 ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`teacher_Id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `tests`
+--
+ALTER TABLE `tests`
+  ADD CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `tests_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

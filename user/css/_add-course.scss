@@ -1,5 +1,14 @@
-#add-course {
-  textarea {
-    resize: none;
+body#add_course_page {
+  background-color: rgb(252, 249, 245);
+  #add-course {
+    textarea {
+      resize: none;
+    }
+  }
+  #example {
+    th,
+    td {
+      vertical-align: middle;
+    }
   }
 }

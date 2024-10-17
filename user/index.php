@@ -11,7 +11,7 @@ if (is_loggedin() === false) {
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Admin page</title>
+    <title>EduCare</title>
     <?php include_once './includes/style_links.php'; ?>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./css/custom.min.css">

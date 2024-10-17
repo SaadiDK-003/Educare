@@ -5,7 +5,7 @@ if (!isset($_POST['course_id'])):
     $getAllCourses_Q = $con->query("CALL `get_all_courses`()");
 
     if (mysqli_num_rows($getAllCourses_Q) > 0) {
-        $courses = mysqli_fetch_all($getAllCourses_Q, MYSQLI_ASSOC);
+        $courses = $getAllCourses_Q->fetch_all(MYSQLI_ASSOC);
         $current_category = '';
         foreach ($courses as $index => $course) {
 
@@ -35,7 +35,7 @@ if (isset($_POST['course_id'])):
     $getCourses_Q = $con->query("CALL `get_course_by_cat_id`($cat_id)");
 
     if (mysqli_num_rows($getCourses_Q) > 0) {
-        $courses_ = mysqli_fetch_all($getCourses_Q, MYSQLI_ASSOC);
+        $courses_ = $getCourses_Q->fetch_all(MYSQLI_ASSOC);
         $current_category_ = '';
         foreach ($courses_ as $index => $course) {
 

@@ -12,8 +12,12 @@
     $(document).ready(function() {
         // Toggle User DropDown
         $(".user-wrapper").on('click', '#toggle-user-menu', function(e) {
-            e.preventDefault();
+            e.stopPropagation();
             $('.submenuw').toggleClass('submenuwopen');
         });
+        $("body").on('click', function(e) {
+            $('.submenuw').removeClass('submenuwopen');
+        });
+
     });
 </script>

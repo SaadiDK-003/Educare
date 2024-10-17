@@ -55,8 +55,15 @@ footer {
   gap: 20px;
 }
 
-#add-course textarea {
+body#add_course_page {
+  background-color: rgb(252, 249, 245);
+}
+body#add_course_page #add-course textarea {
   resize: none;
+}
+body#add_course_page #example th,
+body#add_course_page #example td {
+  vertical-align: middle;
 }
 
 #fetch_courses {
@@ -105,4 +112,8 @@ footer {
   text-decoration: none;
   color: #fff;
   background-color: #9d4e13;
+}
+
+#add_test_page form input[type=file] {
+  height: initial;
 }/*# sourceMappingURL=custom.css.map */

@@ -1,8 +1,8 @@
 <?php
-require_once '../core/database.php';
+require_once '../../core/database.php';
 
 if ($userRole == 'student') {
-    header('Location: index.php');
+    header('Location: ../index.php');
 }
 ?>
 
@@ -13,15 +13,15 @@ if ($userRole == 'student') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher - Manage Course</title>
-    <?php include_once './includes/style_links.php'; ?>
+    <?php include_once '../includes/style_links.php'; ?>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/custom.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/custom.min.css">
 </head>
 
-<body>
+<body id="add_course_page">
 
-    <?php include './includes/header.php'; ?>
+    <?php include '../includes/header.php'; ?>
 
     <div class="container mt-5">
         <div class="row align-items-center">
@@ -29,7 +29,7 @@ if ($userRole == 'student') {
                 <h1>Manage Courses</h1>
             </div>
             <div class="col-6 text-center">
-                <a href="index.php" class="btn btn-secondary">Back</a>
+                <a href="../index.php" class="btn btn-secondary">Back</a>
             </div>
         </div>
         <hr>
@@ -81,7 +81,7 @@ if ($userRole == 'student') {
                                     echo '<h5 class="alert alert-success">' . $course_title . ' has been added.</h5>
                                         <script>
                                             setTimeout(function(){
-                                                window.location.href = "' . SITE_URL . 'user/teacher-add-course.php"
+                                                window.location.href = "' . SITE_URL . 'user/teacher/add-course.php"
                                             },1800);
                                         </script>
                                     ';
@@ -96,12 +96,13 @@ if ($userRole == 'student') {
         </form>
         <div class="row my-5">
             <div class="col-12 mx-auto">
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <table id="example" class="table table-striped table-bordered table-responsive" style="width:100%">
                     <thead>
                         <tr>
                             <th class="text-center font-weight-bold">ID</th>
                             <th class="text-center font-weight-bold">Course Title</th>
                             <th class="text-center font-weight-bold">Course Desc</th>
+                            <th class="text-center font-weight-bold">Add Test / Assignment</th>
                             <th class="text-center font-weight-bold">Action</th>
                         </tr>
                     </thead>
@@ -114,6 +115,10 @@ if ($userRole == 'student') {
                                 <th><?= $course_list->course_id ?></th>
                                 <td><?= $course_list->course_title ?></td>
                                 <td><?= $course_list->course_desc ?></td>
+                                <td class="text-center">
+                                    <a href="add-test.php?course_id=<?= $course_list->course_id ?>" class="btn btn-info btn-sm mb-2">Add Test</a>
+                                    <a href="add-assignment.php" class="btn btn-secondary btn-sm">Add Assignment</a>
+                                </td>
                                 <td class="text-center">
                                     <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $course_list->course_id ?>">
                                         <i class="fas fa-pencil"></i>
@@ -132,13 +137,22 @@ if ($userRole == 'student') {
     </div>
 
 
-    <?php include_once './includes/js_links.php'; ?>
+    <?php include_once '../includes/js_links.php'; ?>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
     <script>
         $(document).ready(function() {
             new DataTable('#example', {
-                ordering: false
+                ordering: false,
+                columns: [{
+                    width: "5%"
+                }, {
+                    width: "20%"
+                }, {
+                    width: "45%"
+                }, {
+                    width: "15%"
+                }, null]
             });
         });
     </script>

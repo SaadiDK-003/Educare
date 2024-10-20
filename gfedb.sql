@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2024 at 08:28 PM
+-- Generation Time: Oct 20, 2024 at 08:31 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -190,7 +190,8 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_Id`) VALUES
-(24, 'HTML & CSS Basics', 'Learn the basics of HTML5 and CSS3', 1, 3);
+(24, 'HTML & CSS Basics', 'Learn the basics of HTML5 and CSS3', 1, 3),
+(25, 'Vector Arts Basics', 'Learn step by step vector graphics.', 4, 4);
 
 -- --------------------------------------------------------
 
@@ -301,7 +302,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tests`

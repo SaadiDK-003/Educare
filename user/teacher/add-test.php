@@ -77,11 +77,11 @@ if (isset($_GET['course_id'])) {
                                 $test_desc = $_POST['test_desc'];
                                 $test_file = $_FILES['test_file'];
 
-                                $targetDir = "../../user/images/";
+                                $targetDir = "../../user/pdf/";
                                 $fileName = basename($test_file["name"]);
                                 $targetFilePath = $targetDir . $fileName;
                                 $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-                                $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+                                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
 
                                 if (in_array($fileType, $allowTypes)) {
                                     if (move_uploaded_file($test_file["tmp_name"], $targetFilePath)) {
@@ -109,41 +109,35 @@ if (isset($_GET['course_id'])) {
             </div>
         </form>
         <div class="row my-5">
-            <!-- DISPLAY NONE JUST FOR NOW WORK IN-PROGRESS -->
-            <div class="col-12 mx-auto d-none">
-                <table id="example" class="table table-striped table-bordered table-responsive" style="width:100%">
+            <div class="col-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
                             <th class="text-center font-weight-bold">ID</th>
-                            <th class="text-center font-weight-bold">Course Title</th>
-                            <th class="text-center font-weight-bold">Course Desc</th>
-                            <th class="text-center font-weight-bold">Add Test / Assignment</th>
+                            <th class="text-center font-weight-bold">Test Title</th>
+                            <th class="text-center font-weight-bold">Test Desc</th>
                             <th class="text-center font-weight-bold">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $course_Q = $con->query("CALL `get_courses_by_teacher_id`($userID)");
-                        while ($course_list = mysqli_fetch_object($course_Q)):
+                        $test_Q = $con->query("CALL `get_test_by_teacher_id`($userID)");
+                        while ($test_list = mysqli_fetch_object($test_Q)):
                         ?>
                             <tr>
-                                <th><?= $course_list->course_id ?></th>
-                                <td><?= $course_list->course_title ?></td>
-                                <td><?= $course_list->course_desc ?></td>
+                                <th><?= $test_list->test_id ?></th>
+                                <td><?= $test_list->test_title ?></td>
+                                <td><?= $test_list->test_desc ?></td>
                                 <td class="text-center">
-                                    <a href="add-test.php?course_id=<?= $course_list->course_id ?>" class="btn btn-info btn-sm mb-2">Add Test</a>
-                                    <a href="add-assignment.php" class="btn btn-secondary btn-sm">Add Assignment</a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $course_list->course_id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $test_list->test_id ?>">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $course_list->course_id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $test_list->test_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
                         <?php endwhile;
-                        $course_Q->close();
+                        $test_Q->close();
                         $con->next_result(); ?>
                     </tbody>
                 </table>
@@ -160,14 +154,14 @@ if (isset($_GET['course_id'])) {
             new DataTable('#example', {
                 ordering: false,
                 columns: [{
-                    width: "5%"
+                    width: "10%"
                 }, {
                     width: "20%"
                 }, {
-                    width: "45%"
+                    width: "60%"
                 }, {
-                    width: "15%"
-                }, null]
+                    width: "10%"
+                }]
             });
         });
     </script>

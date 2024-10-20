@@ -28,6 +28,7 @@ if (is_loggedin()) {
             <input type="password" name="login_pass" required placeholder="Enter your password">
             <input type="submit" name="submit" value="Log in" class="fbtn">
             <p>Create an account<a href="signup.php"> Sign Up </a></p>
+            <p><a href="./"> Back to Home Page </a></p>
         </form>
     </div>
 

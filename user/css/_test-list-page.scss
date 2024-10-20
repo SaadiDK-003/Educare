@@ -1,0 +1,31 @@
+#test-list-page {
+  section {
+    margin: 20px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    h2 {
+      color: #333;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    li a {
+      color: rgb(4, 173, 173);
+      text-decoration: none;
+    }
+
+    a {
+      color: chocolate;
+      text-decoration: none;
+    }
+  }
+}

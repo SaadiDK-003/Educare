@@ -17,7 +17,7 @@ if (!isset($_POST['course_id'])):
             echo '<div class="course-card">';
             echo '<h3>' . $course['course_title'] . '</h3>';
             echo '<p>' . $course['course_desc'] . '</p>';
-            echo '<a href="userassiandtest.html" style="color:rgb(230, 209, 115);">Enter</a>';
+            echo '<a href="userassiandtest.php?course_id=' . $course['course_id'] . '" class="email-link">Enter</a>';
             echo '</div>';
             if (!isset($courses[$index + 1]) || $courses[$index + 1]['category_name'] != $current_category) {
                 echo '</section>';
@@ -47,7 +47,7 @@ if (isset($_POST['course_id'])):
             echo '<div class="course-card">';
             echo '<h3>' . $course['course_title'] . '</h3>';
             echo '<p>' . $course['course_desc'] . '</p>';
-            echo '<a href="userassiandtest.html" style="color:rgb(230, 209, 115);">Enter</a>';
+            echo '<a href="userassiandtest.php?course_id=' . $course['course_id'] . '" class="email-link">Enter</a>';
             echo '</div>';
             if (!isset($courses_[$index + 1]) || $courses_[$index + 1]['category_name'] != $current_category_) {
                 echo '</section>';

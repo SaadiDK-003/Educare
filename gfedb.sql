@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2024 at 12:05 PM
+-- Generation Time: Oct 20, 2024 at 11:33 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -68,6 +68,17 @@ ON c.cat_id = cat.id
 WHERE c.cat_id=cat_id
 ORDER BY cat.category_name, c.course_title$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_test_by_teacher_id` (IN `teacher_id` INT)  SELECT
+t.id AS 'test_id',
+t.test_title,
+t.test_desc,
+t.test_file,
+t.teacher_id,
+t.course_id
+FROM tests t
+INNER JOIN users u
+WHERE t.teacher_id=u.id AND t.teacher_id=teacher_id$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -130,6 +141,13 @@ CREATE TABLE `tests` (
   `teacher_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tests`
+--
+
+INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
+(5, 'HTML Basics test', 'test123', 'wepdevelopmentTest.pdf', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -210,7 +228,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -1,9 +1,9 @@
 <?php
 require_once '../core/database.php';
 
-if (is_loggedin() === false) {
-    header('Location: login.php');
-}
+// if (is_loggedin() === false) {
+//     header('Location: login.php');
+// }
 ?>
 
 <!DOCTYPE html>

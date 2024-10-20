@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2024 at 11:33 AM
+-- Generation Time: Oct 20, 2024 at 08:28 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -48,6 +48,29 @@ INNER JOIN categories cat ON c.cat_id = cat.id
 GROUP BY
     u.id$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_asgmt_by_course_id` (IN `course_id` INT)  SELECT
+a.id AS 'asgmt_id',
+a.asgmt_title,
+a.asgmt_desc,
+a.asgmt_file,
+a.teacher_id,
+a.course_id,
+c.course_title
+FROM assignments a
+INNER JOIN courses c
+WHERE a.course_id=c.id AND a.course_id=course_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_asgmt_by_teacher_id` (IN `teacher_id` INT)  SELECT
+a.id AS 'asgmt_id',
+a.asgmt_title,
+a.asgmt_desc,
+a.asgmt_file,
+a.teacher_id,
+a.course_id
+FROM assignments a
+INNER JOIN users u
+WHERE a.teacher_id=u.id AND a.teacher_id=teacher_id$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_courses_by_teacher_id` (IN `teacher_id` INT)  SELECT
 c.id AS 'course_id',
 c.course_title,
@@ -68,6 +91,28 @@ ON c.cat_id = cat.id
 WHERE c.cat_id=cat_id
 ORDER BY cat.category_name, c.course_title$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_teachers_by_course_id` (IN `course_id` INT)  SELECT
+u.id AS 'teacher_id',
+u.fname,
+u.lname,
+u.email,
+u.bio
+FROM users u
+INNER JOIN courses c
+WHERE u.id = c.teacher_Id AND c.id=course_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_test_by_course_id` (IN `course_id` INT)  SELECT
+t.id AS 'test_id',
+t.test_title,
+t.test_desc,
+t.test_file,
+t.teacher_id,
+t.course_id,
+c.course_title
+FROM tests t
+INNER JOIN courses c
+WHERE t.course_id=c.id AND t.course_id=course_id$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_test_by_teacher_id` (IN `teacher_id` INT)  SELECT
 t.id AS 'test_id',
 t.test_title,
@@ -80,6 +125,28 @@ INNER JOIN users u
 WHERE t.teacher_id=u.id AND t.teacher_id=teacher_id$$
 
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assignments`
+--
+
+CREATE TABLE `assignments` (
+  `id` int(11) NOT NULL,
+  `asgmt_title` varchar(255) NOT NULL,
+  `asgmt_desc` text NOT NULL,
+  `asgmt_file` text NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `assignments`
+--
+
+INSERT INTO `assignments` (`id`, `asgmt_title`, `asgmt_desc`, `asgmt_file`, `teacher_id`, `course_id`) VALUES
+(5, 'HTML Basics Assignment', 'Need to create a simple login / register form.', 'asgmt_just_cause_3.pdf', 3, 24);
 
 -- --------------------------------------------------------
 
@@ -123,9 +190,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_Id`) VALUES
-(2, 'HTML & CSS Basics', 'Learn HTML & CSS with very easy step by step tutorials.', 1, 3),
-(15, 'Vector Arts Basics', 'Learn Vector arts and kjaslkdjlkjlkasd klajsdklaj klasjdlkasdj lkasjdklasjdklsadjaslkdasldkasljdkl', 4, 3),
-(16, 'JavaScript Basics', 'Learn JS', 1, 4);
+(24, 'HTML & CSS Basics', 'Learn the basics of HTML5 and CSS3', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -147,7 +212,7 @@ CREATE TABLE `tests` (
 --
 
 INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
-(5, 'HTML Basics test', 'test123', 'wepdevelopmentTest.pdf', 3, 2);
+(8, 'HTML Basics Test', 'this is a test having 10 questions...', 'Baqar.pdf', 3, 24);
 
 -- --------------------------------------------------------
 
@@ -172,13 +237,21 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `bio`, `course_id`) VALUES
 (1, 'Super', 'Admin', 'admin@gmail.com', '4297f44b13955235245b2497399d7a93', 'admin', NULL, NULL),
-(3, 'teacher1', 'abc', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', 'I am teaching since 2018', NULL),
-(4, 'teacher2', 'test', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL, NULL),
-(5, 'student', 'abcc', 'student@gmail.com', '4297f44b13955235245b2497399d7a93', 'student', NULL, NULL);
+(3, 'ola', 'innocent', 'teacher@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', 'I am teaching since 2018', NULL),
+(4, 'Sana', 'sharjeel', 'teacher1@gmail.com', '4297f44b13955235245b2497399d7a93', 'teacher', NULL, NULL),
+(5, 'jamal', 'hasnain', 'student@gmail.com', '4297f44b13955235245b2497399d7a93', 'student', NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `teacher_id` (`teacher_id`);
 
 --
 -- Indexes for table `categories`
@@ -213,6 +286,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `assignments`
+--
+ALTER TABLE `assignments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -222,13 +301,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -239,6 +318,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
+  ADD CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `courses`

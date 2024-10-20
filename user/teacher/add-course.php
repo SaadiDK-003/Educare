@@ -117,7 +117,7 @@ if ($userRole == 'student') {
                                 <td><?= $course_list->course_desc ?></td>
                                 <td class="text-center">
                                     <a href="add-test.php?course_id=<?= $course_list->course_id ?>" class="btn btn-info btn-sm mb-2">Add Test</a>
-                                    <a href="add-assignment.php" class="btn btn-secondary btn-sm">Add Assignment</a>
+                                    <a href="add-assignment.php?course_id=<?= $course_list->course_id ?>" class="btn btn-secondary btn-sm">Add Assignment</a>
                                 </td>
                                 <td class="text-center">
                                     <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $course_list->course_id ?>">

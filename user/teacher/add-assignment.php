@@ -21,7 +21,7 @@ if (isset($_GET['course_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher - Manage Test</title>
+    <title>Teacher - Manage Assignment</title>
     <?php include_once '../includes/style_links.php'; ?>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="../style.css">
@@ -35,7 +35,7 @@ if (isset($_GET['course_id'])) {
     <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-6 text-center">
-                <h1>Manage Test</h1>
+                <h1>Manage Assignment</h1>
             </div>
             <div class="col-6 text-center">
                 <a href="add-course.php" class="btn btn-secondary">Back</a>
@@ -48,46 +48,46 @@ if (isset($_GET['course_id'])) {
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="test-title">Test Title</label>
-                                <input type="text" name="test_title" id="test-title" class="form-control" placeholder="HTML & CSS Test" required>
+                                <label for="asgmt-title">Assignment Title</label>
+                                <input type="text" name="asgmt_title" id="asgmt-title" class="form-control" placeholder="HTML & CSS Test" required>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="test-desc">Test Description</label>
-                                <textarea rows="4" name="test_desc" id="test-desc" class="form-control" placeholder="Description about the course." required></textarea>
+                                <label for="asgmt-desc">Assignment Description</label>
+                                <textarea rows="4" name="asgmt_desc" id="asgmt-desc" class="form-control" placeholder="Description about the course." required></textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="test-file">Upload Test File</label>
-                                <input type="file" class="form-control" name="test_file" id="test-file">
+                                <label for="asgmt-file">Upload Assignment File</label>
+                                <input type="file" class="form-control" name="asgmt_file" id="asgmt-file">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group text-center">
-                                <button type="submit" name="submit" class="btn btn-primary">Add Test</button>
+                                <button type="submit" name="submit" class="btn btn-primary">Add Assignment</button>
                             </div>
                         </div>
                         <div class="col-12">
                             <?php
                             $statusMsg = '';
-                            if (isset($_POST['test_title']) && isset($_POST['test_desc']) && !empty($_FILES['test_file'])):
-                                $test_title = $_POST['test_title'];
-                                $test_desc = $_POST['test_desc'];
-                                $test_file = $_FILES['test_file'];
+                            if (isset($_POST['asgmt_title']) && isset($_POST['asgmt_desc']) && !empty($_FILES['asgmt_file'])):
+                                $asgmt_title = $_POST['asgmt_title'];
+                                $asgmt_desc = $_POST['asgmt_desc'];
+                                $asgmt_file = $_FILES['asgmt_file'];
 
                                 $targetDir = "../../user/pdf/";
-                                $fileName = basename($test_file["name"]);
+                                $fileName = 'asgmt_'.basename($asgmt_file["name"]);
                                 $targetFilePath = $targetDir . $fileName;
                                 $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
                                 $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
 
                                 if (in_array($fileType, $allowTypes)) {
-                                    if (move_uploaded_file($test_file["tmp_name"], $targetFilePath)) {
-                                        $add_test_Q = $con->query("INSERT INTO `tests` (test_title,test_desc,test_file,teacher_id,course_id) VALUES ('$test_title','$test_desc','$fileName','$userID','$c_id')");
-                                        if ($add_test_Q) {
-                                            echo '<h5 class="alert alert-success">' . $test_title . ' has been added.</h5>
+                                    if (move_uploaded_file($asgmt_file["tmp_name"], $targetFilePath)) {
+                                        $add_asgmt_Q = $con->query("INSERT INTO `assignments` (asgmt_title,asgmt_desc,asgmt_file,teacher_id,course_id) VALUES ('$asgmt_title','$asgmt_desc','$fileName','$userID','$c_id')");
+                                        if ($add_asgmt_Q) {
+                                            echo '<h5 class="alert alert-success">' . $asgmt_title . ' has been added.</h5>
                                                 <script>
                                                     setTimeout(function(){
                                                         window.location.href = "' . SITE_URL . 'user/teacher/add-course.php"
@@ -114,30 +114,30 @@ if (isset($_GET['course_id'])) {
                     <thead>
                         <tr>
                             <th class="text-center font-weight-bold">ID</th>
-                            <th class="text-center font-weight-bold">Test Title</th>
-                            <th class="text-center font-weight-bold">Test Desc</th>
+                            <th class="text-center font-weight-bold">Assignment Title</th>
+                            <th class="text-center font-weight-bold">Assignment Desc</th>
                             <th class="text-center font-weight-bold">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $test_Q = $con->query("CALL `get_test_by_teacher_id`($userID)");
-                        while ($test_list = mysqli_fetch_object($test_Q)):
+                        $asgmt_Q = $con->query("CALL `get_asgmt_by_teacher_id`($userID)");
+                        while ($asgmt_list = mysqli_fetch_object($asgmt_Q)):
                         ?>
                             <tr>
-                                <th><?= $test_list->test_id ?></th>
-                                <td><?= $test_list->test_title ?></td>
-                                <td><?= $test_list->test_desc ?></td>
+                                <th><?= $asgmt_list->asgmt_id ?></th>
+                                <td><?= $asgmt_list->asgmt_title ?></td>
+                                <td><?= $asgmt_list->asgmt_desc ?></td>
                                 <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $test_list->test_id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $asgmt_list->asgmt_id ?>">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $test_list->test_id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $asgmt_list->asgmt_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
                         <?php endwhile;
-                        $test_Q->close();
+                        $asgmt_Q->close();
                         $con->next_result(); ?>
                     </tbody>
                 </table>

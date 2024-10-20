@@ -22,19 +22,27 @@ require_once '../core/database.php';
             </div>
             <?php
             $getAllT_Q = $con->query("CALL `get_all_teachers`()");
-            while ($teach_list = mysqli_fetch_object($getAllT_Q)):
+            if (mysqli_num_rows($getAllT_Q) > 0) {
+                while ($teach_list = mysqli_fetch_object($getAllT_Q)):
             ?>
-                <div class="col-12 col-md-6">
-                    <div class="teacher">
-                        <h2><?= $teach_list->fname . '-' . $teach_list->lname ?></h2>
-                        <p><strong>Subject:</strong> <?= $teach_list->category_names ?></p>
-                        <p><?= $teach_list->bio ?? "&nbsp;" ?></p>
-                        <a href="mailto:example@example.com?subject=Hello%20there&body=I%20would%20like%20to%20inquire%20about..." class="email-link">
-                            Contact me
-                        </a>
+                    <div class="col-12 col-md-6">
+                        <div class="teacher">
+                            <h2><?= $teach_list->fname . '-' . $teach_list->lname ?></h2>
+                            <p><strong>Subject:</strong> <?= $teach_list->category_names ?></p>
+                            <p><?= $teach_list->bio ?? "&nbsp;" ?></p>
+                            <a href="mailto:example@example.com?subject=Hello%20there&body=I%20would%20like%20to%20inquire%20about..." class="email-link">
+                                Contact me
+                            </a>
+                        </div>
                     </div>
+                <?php endwhile;
+            } else {
+                ?>
+                <div class="col-12">
+                    <h2 class="text-center mt-3">No Teacher Available Right Now.</h2>
                 </div>
-            <?php endwhile;
+            <?php
+            }
             $getAllT_Q->close();
             $con->next_result(); ?>
         </div>

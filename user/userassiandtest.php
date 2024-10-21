@@ -124,7 +124,7 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                             <a id="test_file" href="#!" class="btn btn-primary" download>Download <span id="file-info"></span> PDF</a>
                         </div>
                         <?php if ($userRole == 'student'): ?>
-                            <div class="col-4">
+                            <div class="col-4 text-right">
                                 <a id="test_std_file" href="#!" class="btn btn-primary" download>Upload <span id="file-info"></span> PDF</a>
                             </div>
                         <?php endif; ?>

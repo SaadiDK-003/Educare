@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2024 at 08:31 PM
+-- Generation Time: Oct 21, 2024 at 12:18 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -146,7 +146,7 @@ CREATE TABLE `assignments` (
 --
 
 INSERT INTO `assignments` (`id`, `asgmt_title`, `asgmt_desc`, `asgmt_file`, `teacher_id`, `course_id`) VALUES
-(5, 'HTML Basics Assignment', 'Need to create a simple login / register form.', 'asgmt_just_cause_3.pdf', 3, 24);
+(6, 'HTML Assignment', 'create a login / register page.', 'asgmt_just_cause_3.pdf', 3, 26);
 
 -- --------------------------------------------------------
 
@@ -190,8 +190,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_Id`) VALUES
-(24, 'HTML & CSS Basics', 'Learn the basics of HTML5 and CSS3', 1, 3),
-(25, 'Vector Arts Basics', 'Learn step by step vector graphics.', 4, 4);
+(26, 'HTML & CSS Basics', 'Learn HTML & CSS step by step.', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -213,7 +212,22 @@ CREATE TABLE `tests` (
 --
 
 INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
-(8, 'HTML Basics Test', 'this is a test having 10 questions...', 'Baqar.pdf', 3, 24);
+(9, 'HTML Basics test', '10 quest paper.', 'abcddd.pdf', 3, 26);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `upload_tests`
+--
+
+CREATE TABLE `upload_tests` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `uploaded_file` text NOT NULL,
+  `status` enum('in-review','correct','incorrect','reject') NOT NULL DEFAULT 'in-review'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -277,6 +291,12 @@ ALTER TABLE `tests`
   ADD KEY `course_id` (`course_id`);
 
 --
+-- Indexes for table `upload_tests`
+--
+ALTER TABLE `upload_tests`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -290,7 +310,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -302,13 +322,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `upload_tests`
+--
+ALTER TABLE `upload_tests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

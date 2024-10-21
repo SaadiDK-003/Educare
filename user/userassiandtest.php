@@ -120,9 +120,14 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                         <div class="col-12">
                             <p id="title_desc"></p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-8">
                             <a id="test_file" href="#!" class="btn btn-primary" download>Download <span id="file-info"></span> PDF</a>
                         </div>
+                        <?php if ($userRole == 'student'): ?>
+                            <div class="col-4">
+                                <a id="test_std_file" href="#!" class="btn btn-primary" download>Upload <span id="file-info"></span> PDF</a>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -156,7 +161,7 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                     }
                 });
             });
-            
+
             $(".asgmt_id").on('click', function(e) {
                 e.preventDefault();
                 let id = $(this).data('id');

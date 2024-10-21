@@ -72,13 +72,20 @@ if (isset($_GET['course_id'])) {
                         <div class="col-12">
                             <?php
                             $statusMsg = '';
+                            define('PDF_MAGIC', "\\x25\\x50\\x44\\x46\\x2D");
                             if (isset($_POST['asgmt_title']) && isset($_POST['asgmt_desc']) && !empty($_FILES['asgmt_file'])):
                                 $asgmt_title = $_POST['asgmt_title'];
                                 $asgmt_desc = $_POST['asgmt_desc'];
                                 $asgmt_file = $_FILES['asgmt_file'];
 
+                                if (file_exists($asgmt_file['tmp_name']) && filesize($asgmt_file['tmp_name']) > 0) {
+                                    echo "The PDF file has content.";
+                                } else {
+                                    echo "The PDF file is empty.";
+                                }
+                                die();
                                 $targetDir = "../../user/pdf/";
-                                $fileName = 'asgmt_'.basename($asgmt_file["name"]);
+                                $fileName = 'asgmt_' . basename($asgmt_file["name"]);
                                 $targetFilePath = $targetDir . $fileName;
                                 $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
                                 $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');

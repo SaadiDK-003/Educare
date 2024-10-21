@@ -28,7 +28,7 @@
                             <h5 class="mb-0"><?= $userFullName ?></h5>
                         </div>
                         <hr>
-                        <a href="<?= SITE_URL ?>user/index.php" class="submenulink">
+                        <a href="<?= SITE_URL ?>user/profile.php" class="submenulink">
                             <img src="<?= SITE_URL ?>user/images/editprofile.png">
                             <p>Edit profile</p>
                         </a>
@@ -40,6 +40,10 @@
                             <a href="<?= SITE_URL ?>user/teacher/add-course.php" class="submenulink">
                                 <img src="<?= SITE_URL ?>user/images/settings.png">
                                 <p>Add Course</p>
+                            </a>
+                            <a href="<?= SITE_URL ?>user/teacher/check-test-and-assgmt.php" class="submenulink">
+                                <img src="<?= SITE_URL ?>user/images/settings.png">
+                                <p>Check Test/Assgmt</p>
                             </a>
                         <?php endif; ?>
                         <?php if ($userRole == 'admin'): ?>

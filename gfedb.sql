@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 11:16 PM
+-- Generation Time: Oct 22, 2024 at 11:58 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -90,6 +90,32 @@ INNER JOIN categories cat
 ON c.cat_id = cat.id
 WHERE c.cat_id=cat_id
 ORDER BY cat.category_name, c.course_title$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_std_asgmt_by_teacher_id` (IN `teacher_id` INT)  SELECT
+ua.id AS 'ua_id',
+ua.student_id,
+ua.asgmt_id AS 'asgmt_id',
+ua.uploaded_file,
+ua.status,
+a.asgmt_title,
+a.asgmt_desc,
+a.course_id
+FROM upload_assignments ua
+INNER JOIN assignments a
+WHERE ua.asgmt_id=a.id AND ua.teacher_id=teacher_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_std_test_by_teacher_id` (IN `teacher_id` INT)  SELECT
+ut.id AS 'upt_id',
+ut.student_id,
+ut.test_id AS 'test_id',
+ut.uploaded_file,
+ut.status,
+t.test_title,
+t.test_desc,
+t.course_id AS 'course_id'
+FROM upload_tests ut
+INNER JOIN tests t
+WHERE ut.test_id=t.id AND ut.teacher_id=teacher_id$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_teachers_by_course_id` (IN `course_id` INT)  SELECT
 u.id AS 'teacher_id',
@@ -323,7 +349,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -341,7 +367,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `upload_assignments`

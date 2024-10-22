@@ -125,7 +125,7 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                         </div>
                         <?php if ($userRole == 'student'): ?>
                             <div class="col-4 text-right">
-                                <a id="test_std_file" href="#!" class="btn btn-primary" download>Upload <span id="file-info"></span> PDF</a>
+                                <a id="test_std_file" href="#!" class="btn btn-secondary">Upload <span id="file-info"></span> PDF</a>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -158,6 +158,7 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                         $(".modal-title").html(res.title);
                         $("#title_desc").html(res.desc);
                         $("#test_file").attr('href', 'pdf/' + res.file);
+                        $("#test_std_file").attr("href", `student/upload-test.php?test_id=${res.test_id}&teacher_id=${res.teacher_id}`);
                     }
                 });
             });
@@ -177,6 +178,7 @@ $getCourseTitle = mysqli_fetch_object($getCourseTitle_Q);
                         $(".modal-title").html(res.title);
                         $("#title_desc").html(res.desc);
                         $("#test_file").attr('href', 'pdf/' + res.file);
+                        $("#test_std_file").attr("href", `student/upload-assignment.php?asgmt_id=${res.asgmt_id}&teacher_id=${res.teacher_id}`);
                     }
                 });
             });

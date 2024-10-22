@@ -77,27 +77,31 @@ if (isset($_GET['course_id'])) {
                                 $test_desc = $_POST['test_desc'];
                                 $test_file = $_FILES['test_file'];
 
-                                $targetDir = "../../user/pdf/";
-                                $fileName = basename($test_file["name"]);
-                                $targetFilePath = $targetDir . $fileName;
-                                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-                                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+                                if (file_exists($test_file['tmp_name']) && filesize($test_file['tmp_name']) > 0) {
+                                    $targetDir = "../../user/pdf/";
+                                    $fileName = 'test_' . basename($test_file["name"]);
+                                    $targetFilePath = $targetDir . $fileName;
+                                    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                                    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
 
-                                if (in_array($fileType, $allowTypes)) {
-                                    if (move_uploaded_file($test_file["tmp_name"], $targetFilePath)) {
-                                        $add_test_Q = $con->query("INSERT INTO `tests` (test_title,test_desc,test_file,teacher_id,course_id) VALUES ('$test_title','$test_desc','$fileName','$userID','$c_id')");
-                                        if ($add_test_Q) {
-                                            echo '<h5 class="alert alert-success">' . $test_title . ' has been added.</h5>
+                                    if (in_array($fileType, $allowTypes)) {
+                                        if (move_uploaded_file($test_file["tmp_name"], $targetFilePath)) {
+                                            $add_test_Q = $con->query("INSERT INTO `tests` (test_title,test_desc,test_file,teacher_id,course_id) VALUES ('$test_title','$test_desc','$fileName','$userID','$c_id')");
+                                            if ($add_test_Q) {
+                                                echo '<h5 class="alert alert-success">' . $test_title . ' has been added.</h5>
                                                 <script>
                                                     setTimeout(function(){
                                                         window.location.href = "' . SITE_URL . 'user/teacher/add-course.php"
                                                     },1800);
                                                 </script>
                                             ';
+                                            }
                                         }
+                                    } else {
+                                        $statusMsg = "<h5 class='text-center alert alert-danger'>Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.</h5>";
                                     }
                                 } else {
-                                    $statusMsg = 'Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.';
+                                    $statusMsg = "<h5 class='text-center alert alert-danger'>The file is empty.</h5>";
                                 }
                                 echo $statusMsg;
                             endif;

@@ -6,5 +6,5 @@ if (isset($_POST['asgmt_id'])):
     $asgmtInfo_Q = $con->query("SELECT * FROM `assignments` WHERE `id`='$asgmtID'");
     $asgmtInfo = mysqli_fetch_object($asgmtInfo_Q);
 
-    echo json_encode(["title" => $asgmtInfo->asgmt_title, "desc" => $asgmtInfo->asgmt_desc, "file" => $asgmtInfo->asgmt_file]);
+    echo json_encode(["title" => $asgmtInfo->asgmt_title, "desc" => $asgmtInfo->asgmt_desc, "file" => $asgmtInfo->asgmt_file, "teacher_id" => $asgmtInfo->teacher_id, "asgmt_id" => $asgmtInfo->id]);
 endif;

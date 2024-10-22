@@ -6,5 +6,5 @@ if (isset($_POST['test_id'])):
     $testInfo_Q = $con->query("SELECT * FROM `tests` WHERE `id`='$testID'");
     $testInfo = mysqli_fetch_object($testInfo_Q);
 
-    echo json_encode(["title" => $testInfo->test_title, "desc" => $testInfo->test_desc, "file" => $testInfo->test_file]);
+    echo json_encode(["title" => $testInfo->test_title, "desc" => $testInfo->test_desc, "file" => $testInfo->test_file, "teacher_id" => $testInfo->teacher_id, "test_id" => $testInfo->id]);
 endif;

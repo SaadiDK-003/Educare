@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2024 at 12:18 PM
+-- Generation Time: Oct 22, 2024 at 11:16 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -141,13 +141,6 @@ CREATE TABLE `assignments` (
   `course_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `assignments`
---
-
-INSERT INTO `assignments` (`id`, `asgmt_title`, `asgmt_desc`, `asgmt_file`, `teacher_id`, `course_id`) VALUES
-(6, 'HTML Assignment', 'create a login / register page.', 'asgmt_just_cause_3.pdf', 3, 26);
-
 -- --------------------------------------------------------
 
 --
@@ -207,12 +200,20 @@ CREATE TABLE `tests` (
   `course_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `tests`
+-- Table structure for table `upload_assignments`
 --
 
-INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
-(9, 'HTML Basics test', '10 quest paper.', 'abcddd.pdf', 3, 26);
+CREATE TABLE `upload_assignments` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `asgmt_id` int(11) NOT NULL,
+  `uploaded_file` text NOT NULL,
+  `status` enum('in-review','correct','incorrect','reject') NOT NULL DEFAULT 'in-review'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -224,7 +225,7 @@ CREATE TABLE `upload_tests` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `teacher_id` int(11) NOT NULL,
-  `course_id` int(11) NOT NULL,
+  `test_id` int(11) NOT NULL,
   `uploaded_file` text NOT NULL,
   `status` enum('in-review','correct','incorrect','reject') NOT NULL DEFAULT 'in-review'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -291,10 +292,22 @@ ALTER TABLE `tests`
   ADD KEY `course_id` (`course_id`);
 
 --
+-- Indexes for table `upload_assignments`
+--
+ALTER TABLE `upload_assignments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `asgmt_id` (`asgmt_id`);
+
+--
 -- Indexes for table `upload_tests`
 --
 ALTER TABLE `upload_tests`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `test_id` (`test_id`);
 
 --
 -- Indexes for table `users`
@@ -310,7 +323,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -328,7 +341,13 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `upload_assignments`
+--
+ALTER TABLE `upload_assignments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `upload_tests`
@@ -366,6 +385,22 @@ ALTER TABLE `courses`
 ALTER TABLE `tests`
   ADD CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `tests_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
+
+--
+-- Constraints for table `upload_assignments`
+--
+ALTER TABLE `upload_assignments`
+  ADD CONSTRAINT `upload_assignments_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `upload_assignments_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `upload_assignments_ibfk_4` FOREIGN KEY (`asgmt_id`) REFERENCES `assignments` (`id`);
+
+--
+-- Constraints for table `upload_tests`
+--
+ALTER TABLE `upload_tests`
+  ADD CONSTRAINT `upload_tests_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `upload_tests_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `upload_tests_ibfk_4` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

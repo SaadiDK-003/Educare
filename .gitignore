@@ -1,4 +1,4 @@
 *.txt
 *.zip
 admin/
-pdf/*
+user/pdf/*

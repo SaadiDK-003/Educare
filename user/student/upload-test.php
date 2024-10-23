@@ -100,7 +100,8 @@ if (isset($_GET['test_id']) && isset($_GET['teacher_id'])) {
                 </div>
             </div>
         </form>
-        <div class="row my-5">
+        <!-- HIDDEN FOR NOW -->
+        <div class="row my-5 d-none">
             <div class="col-12">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>

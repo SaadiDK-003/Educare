@@ -1,7 +1,7 @@
 <?php
 require_once '../../core/database.php';
 
-if (!isset($_POST['course_id'])):
+if (!isset($_POST['course_id']) && !isset($_POST['course_edit_id'])):
     $getAllCourses_Q = $con->query("CALL `get_all_courses`()");
 
     if (mysqli_num_rows($getAllCourses_Q) > 0) {
@@ -30,7 +30,7 @@ if (!isset($_POST['course_id'])):
     $con->next_result();
 endif;
 
-if (isset($_POST['course_id'])):
+if (isset($_POST['course_id']) && !isset($_POST['course_edit_id'])):
     $cat_id = $_POST['course_id'];
     $getCourses_Q = $con->query("CALL `get_course_by_cat_id`($cat_id)");
 
@@ -57,5 +57,20 @@ if (isset($_POST['course_id'])):
         echo "<span>No courses found.</span>";
     }
     $getCourses_Q->close();
+    $con->next_result();
+endif;
+
+
+if (isset($_POST['course_edit_id']) && !isset($_POST['course_id'])):
+    $get_course_id = $_POST['course_edit_id'];
+    $get_course_q = $con->query("CALL `get_course_by_id`($get_course_id)");
+    $get_course = mysqli_fetch_object($get_course_q);
+
+    $res = ["course_id" => $get_course->course_id, "course_title" => $get_course->course_title, "course_desc" => $get_course->course_desc, "cat_id" => $get_course->cat_id, "category_name" =>
+    $get_course->category_name];
+
+    echo json_encode($res);
+
+    $get_course_q->close();
     $con->next_result();
 endif;

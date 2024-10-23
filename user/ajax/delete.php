@@ -18,3 +18,11 @@ if (isset($_POST['asgmt_del_id'])):
         echo 'Student Assignment has been deleted.';
     }
 endif;
+
+if (isset($_POST['course_del'])):
+    $c_id = $_POST['course_del'];
+    $cq = $con->query("DELETE FROM `courses` WHERE `id`='$c_id'");
+    if ($cq) {
+        echo 'Course has been deleted.';
+    }
+endif;

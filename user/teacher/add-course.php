@@ -95,6 +95,13 @@ if ($userRole == 'student') {
             </div>
         </form>
         <div class="row my-5">
+            <div class="col-12">
+                <?php
+                if (isset($_POST['upd_course_title']) && isset($_POST['upd_course_desc'])):
+                    update_course($_POST);
+                endif;
+                ?>
+            </div>
             <div class="col-12 mx-auto">
                 <table id="example" class="table table-striped table-bordered table-responsive" style="width:100%">
                     <thead>
@@ -120,9 +127,9 @@ if ($userRole == 'student') {
                                     <a href="add-assignment.php?course_id=<?= $course_list->course_id ?>" class="btn btn-secondary btn-sm">Add Assignment</a>
                                 </td>
                                 <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $course_list->course_id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-course" data-id="<?= $course_list->course_id ?>" data-toggle="modal" data-target="#courseUpdate">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $course_list->course_id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-course" data-id="<?= $course_list->course_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -132,6 +139,71 @@ if ($userRole == 'student') {
                         $con->next_result(); ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal For Test Update -->
+    <div class="modal fade" id="courseUpdate" tabindex="-1" aria-labelledby="courseUpdateLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <form action="" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="courseUpdateLabel">Course Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="upd_course_title">Course Name</label>
+                                    <input type="text" class="form-control" name="upd_course_title" id="upd_course_title" placeholder="Course Name">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="upd_course_desc">Course Description</label>
+                                    <textarea rows="4" class="form-control" name="upd_course_desc" id="upd_course_desc" placeholder="Course Description"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="upd_category">Select Category</label>
+                                    <select class="form-control" name="upd_category" id="upd_category" required>
+                                        <option value="" selected hidden>Select Course Category</option>
+                                        <?php
+                                        $cat_list_Q = $con->query("SELECT * FROM `categories`");
+                                        while ($cat_list = mysqli_fetch_object($cat_list_Q)):
+                                        ?>
+                                            <option value="<?= $cat_list->id ?>"><?= $cat_list->category_name ?></option>
+                                        <?php endwhile;
+                                        $cat_list_Q->close();
+                                        $con->next_result(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2 text-center">
+                                <span class="show-res"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="upd_id" value="">
+                        <button type="submit" class="btn btn-primary" name="submit" id="submit">Update</button>
+                        <a href="#!" class="btn btn-secondary" data-dismiss="modal">Close</a href="#!">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-body bg-danger text-white">
+                Hello, world! This is a toast message.
             </div>
         </div>
     </div>
@@ -153,6 +225,51 @@ if ($userRole == 'student') {
                 }, {
                     width: "15%"
                 }, null]
+            });
+            $(".btn-del-course").on('click', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '../ajax/delete.php',
+                    method: 'post',
+                    data: {
+                        course_del: id
+                    },
+                    success: function(response) {
+                        $('.toast').toast('show');
+                        $(".toast-body").html(response);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1800);
+                    }
+                })
+            });
+
+            $(".btn-edit-course").on('click', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '../ajax/courses.php',
+                    method: 'post',
+                    data: {
+                        course_edit_id: id
+                    },
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        console.log(res);
+                        $("input[name='upd_id']").val(res.course_id);
+                        $("#upd_course_title").val(res.course_title);
+                        $("#upd_course_desc").val(res.course_desc);
+                        $("#upd_category option:selected").val(res.cat_id);
+                        $("#upd_category option:selected").text(res.category_name);
+
+                        // $('.toast').toast('show');
+                        // $(".toast-body").html(response);
+                        // setTimeout(() => {
+                        //     window.location.reload();
+                        // }, 1800);
+                    }
+                })
             });
         });
     </script>

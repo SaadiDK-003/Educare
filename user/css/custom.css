@@ -58,7 +58,7 @@ footer {
 body#add_course_page {
   background-color: rgb(252, 249, 245);
 }
-body#add_course_page #add-course textarea {
+body#add_course_page textarea {
   resize: none;
 }
 body#add_course_page #example th,

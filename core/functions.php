@@ -28,3 +28,21 @@ function update_profile($POST, $id)
         ';
     }
 }
+
+
+function update_course($POST)
+{
+    global $con;
+    $upd_course_title = $POST['upd_course_title'];
+    $upd_course_desc = $POST['upd_course_desc'];
+    $upd_category = $POST['upd_category'];
+    $upd_id = $POST['upd_id'];
+
+
+    $course_Q = $con->query("UPDATE `courses` SET `course_title`='$upd_course_title', `course_desc`='$upd_course_desc', `cat_id`='$upd_category' WHERE `id`='$upd_id'");
+    if ($course_Q) {
+        echo '<h4 class="alert alert-success text-center mt-3 mx-auto w-50">Course has been updated.</h4>
+        <script>setTimeout(function(){ window.location.href = "add-course.php"; },1800);</script>
+        ';
+    }
+}

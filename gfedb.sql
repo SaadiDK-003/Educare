@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2024 at 12:55 PM
+-- Generation Time: Oct 24, 2024 at 12:26 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -90,6 +90,16 @@ INNER JOIN categories cat
 ON c.cat_id = cat.id
 WHERE c.cat_id=cat_id
 ORDER BY cat.category_name, c.course_title$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_course_by_id` (IN `course_id` INT)  SELECT
+c.id AS 'course_id',
+c.course_title,
+c.course_desc,
+c.cat_id AS 'cat_id',
+cat.category_name
+FROM courses c
+INNER JOIN categories cat
+WHERE c.cat_id=cat.id AND c.id=course_id$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_std_asgmt_by_teacher_id` (IN `teacher_id` INT)  SELECT
 ua.id AS 'ua_id',
@@ -209,7 +219,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course_title`, `course_desc`, `cat_id`, `teacher_Id`) VALUES
-(26, 'HTML & CSS Basics', 'Learn HTML & CSS step by step.', 1, 3);
+(29, 'HTML & CSS Basics', 'learn HTML and CSS', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -225,13 +235,6 @@ CREATE TABLE `tests` (
   `teacher_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tests`
---
-
-INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
-(13, 'HTML Test', '10 ques each carry 2 marks.', 'test_abcddd.pdf', 3, 26);
 
 -- --------------------------------------------------------
 
@@ -262,13 +265,6 @@ CREATE TABLE `upload_tests` (
   `uploaded_file` text NOT NULL,
   `status` enum('in-review','correct','incorrect','reject') NOT NULL DEFAULT 'in-review'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `upload_tests`
---
-
-INSERT INTO `upload_tests` (`id`, `student_id`, `teacher_id`, `test_id`, `uploaded_file`, `status`) VALUES
-(1, 5, 3, 13, 'std_test_5_Baqar.pdf', 'in-review');
 
 -- --------------------------------------------------------
 
@@ -306,8 +302,8 @@ INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `password`, `user_type`, `
 --
 ALTER TABLE `assignments`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `course_id` (`course_id`),
-  ADD KEY `teacher_id` (`teacher_id`);
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `assignments_ibfk_1` (`course_id`);
 
 --
 -- Indexes for table `categories`
@@ -320,8 +316,8 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `courses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `teacher_Id` (`teacher_Id`),
-  ADD KEY `courses_ibfk_1` (`cat_id`);
+  ADD KEY `courses_ibfk_1` (`cat_id`),
+  ADD KEY `courses_ibfk_2` (`teacher_Id`);
 
 --
 -- Indexes for table `tests`
@@ -329,7 +325,7 @@ ALTER TABLE `courses`
 ALTER TABLE `tests`
   ADD PRIMARY KEY (`id`),
   ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `course_id` (`course_id`);
+  ADD KEY `tests_ibfk_2` (`course_id`);
 
 --
 -- Indexes for table `upload_assignments`
@@ -338,7 +334,7 @@ ALTER TABLE `upload_assignments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `student_id` (`student_id`),
   ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `asgmt_id` (`asgmt_id`);
+  ADD KEY `upload_assignments_ibfk_4` (`asgmt_id`);
 
 --
 -- Indexes for table `upload_tests`
@@ -347,7 +343,7 @@ ALTER TABLE `upload_tests`
   ADD PRIMARY KEY (`id`),
   ADD KEY `student_id` (`student_id`),
   ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `test_id` (`test_id`);
+  ADD KEY `upload_tests_ibfk_4` (`test_id`);
 
 --
 -- Indexes for table `users`
@@ -363,7 +359,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -375,25 +371,25 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `upload_assignments`
 --
 ALTER TABLE `upload_assignments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `upload_tests`
 --
 ALTER TABLE `upload_tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -409,7 +405,7 @@ ALTER TABLE `users`
 -- Constraints for table `assignments`
 --
 ALTER TABLE `assignments`
-  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
+  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`);
 
 --
@@ -417,14 +413,14 @@ ALTER TABLE `assignments`
 --
 ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`teacher_Id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`teacher_Id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tests`
 --
 ALTER TABLE `tests`
   ADD CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `tests_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
+  ADD CONSTRAINT `tests_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `upload_assignments`
@@ -432,7 +428,7 @@ ALTER TABLE `tests`
 ALTER TABLE `upload_assignments`
   ADD CONSTRAINT `upload_assignments_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `upload_assignments_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `upload_assignments_ibfk_4` FOREIGN KEY (`asgmt_id`) REFERENCES `assignments` (`id`);
+  ADD CONSTRAINT `upload_assignments_ibfk_4` FOREIGN KEY (`asgmt_id`) REFERENCES `assignments` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `upload_tests`
@@ -440,7 +436,7 @@ ALTER TABLE `upload_assignments`
 ALTER TABLE `upload_tests`
   ADD CONSTRAINT `upload_tests_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `upload_tests_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `upload_tests_ibfk_4` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`);
+  ADD CONSTRAINT `upload_tests_ibfk_4` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

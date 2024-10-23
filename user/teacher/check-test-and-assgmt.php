@@ -124,9 +124,9 @@ if (is_loggedin() === false || $userRole == 'student') {
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $asgmt_list->ua_id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-asgmt" data-id="<?= $asgmt_list->ua_id ?>" data-toggle="modal" data-target="#testUpdate">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $asgmt_list->ua_id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-asgmt" data-id="<?= $asgmt_list->ua_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -145,7 +145,7 @@ if (is_loggedin() === false || $userRole == 'student') {
     <div class="modal fade" id="testUpdate" tabindex="-1" aria-labelledby="testUpdateLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
-                <form action="">
+                <form id="upd-form">
                     <div class="modal-header">
                         <h5 class="modal-title" id="testUpdateLabel">Test Info</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -166,9 +166,14 @@ if (is_loggedin() === false || $userRole == 'student') {
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-12 my-2 text-center">
+                                <span class="show-res"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="upd_id" value="">
+                        <input type="hidden" name="upd_action" value="">
                         <button type="submit" class="btn btn-primary" name="submit" id="submit">Update</button>
                         <a href="#!" class="btn btn-secondary" data-dismiss="modal">Close</a href="#!">
                     </div>
@@ -203,7 +208,31 @@ if (is_loggedin() === false || $userRole == 'student') {
             $(document).on("click", '.btn-edit-test', function(e) {
                 e.preventDefault();
                 let test_id = $(this).data('id');
+                $("input[name='upd_id']").val(test_id);
+                $("input[name='upd_action']").val("test_update");
             });
+
+            $(document).on("click", '.btn-edit-asgmt', function(e) {
+                e.preventDefault();
+                let asgmt_id = $(this).data('id');
+                $("input[name='upd_id']").val(asgmt_id);
+                $("input[name='upd_action']").val("asgmt_update");
+            });
+
+            $("#upd-form").on('submit', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: '../ajax/upd_status.php',
+                    method: 'post',
+                    data: formData,
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        $(".show-res").addClass(res.status).html(res.msg);
+                    }
+                });
+            });
+
 
 
         });

@@ -32,7 +32,11 @@ if (is_loggedin() === false || $userRole == 'student') {
             </div>
         </div>
         <hr>
+        <!-- Test Table -->
         <div class="row my-5">
+            <div class="col-12">
+                <h2>Test Table</h2>
+            </div>
             <div class="col-12">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
@@ -67,9 +71,9 @@ if (is_loggedin() === false || $userRole == 'student') {
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-cat" data-id="<?= $test_list->upt_id ?>">
+                                    <a href="#!" class="btn btn-primary btn-sm btn-edit-test" data-id="<?= $test_list->upt_id ?>" data-toggle="modal" data-target="#testUpdate">
                                         <i class="fas fa-pencil"></i>
-                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-cat" data-id="<?= $test_list->upt_id ?>">
+                                    </a> | <a href="#!" class="btn btn-danger btn-sm btn-del-test" data-id="<?= $test_list->upt_id ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -81,15 +85,18 @@ if (is_loggedin() === false || $userRole == 'student') {
                 </table>
             </div>
         </div>
-
+        <!-- Assignment Table -->
         <div class="row my-5">
+            <div class="col-12">
+                <h2>Assignment Table</h2>
+            </div>
             <div class="col-12">
                 <table id="example1" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
                             <th class="text-center font-weight-bold">ID</th>
-                            <th class="text-center font-weight-bold">Test Title</th>
-                            <th class="text-center font-weight-bold">Test Desc</th>
+                            <th class="text-center font-weight-bold">Asgmt Title</th>
+                            <th class="text-center font-weight-bold">Asgmt Desc</th>
                             <th class="text-center font-weight-bold">Student File</th>
                             <th class="text-center font-weight-bold">Status</th>
                             <th class="text-center font-weight-bold">Action</th>
@@ -134,6 +141,43 @@ if (is_loggedin() === false || $userRole == 'student') {
     </div>
 
 
+    <!-- Modal For Test Update -->
+    <div class="modal fade" id="testUpdate" tabindex="-1" aria-labelledby="testUpdateLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="testUpdateLabel">Test Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="update-status">Select Status</label>
+                                    <select name="update_status" id="update-status" class="form-control" required>
+                                        <option value="" selected hidden>Select Status</option>
+                                        <option value="in-review">in-review</option>
+                                        <option value="correct">correct</option>
+                                        <option value="incorrect">incorrect</option>
+                                        <option value="reject">reject</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name="submit" id="submit">Update</button>
+                        <a href="#!" class="btn btn-secondary" data-dismiss="modal">Close</a href="#!">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <?php include_once '../includes/js_links.php'; ?>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
@@ -155,6 +199,13 @@ if (is_loggedin() === false || $userRole == 'student') {
                     width: "10%"
                 }]
             });
+
+            $(document).on("click", '.btn-edit-test', function(e) {
+                e.preventDefault();
+                let test_id = $(this).data('id');
+            });
+
+
         });
     </script>
 </body>

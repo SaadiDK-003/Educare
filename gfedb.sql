@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 11:58 PM
+-- Generation Time: Oct 23, 2024 at 12:55 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -226,6 +226,13 @@ CREATE TABLE `tests` (
   `course_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tests`
+--
+
+INSERT INTO `tests` (`id`, `test_title`, `test_desc`, `test_file`, `teacher_id`, `course_id`) VALUES
+(13, 'HTML Test', '10 ques each carry 2 marks.', 'test_abcddd.pdf', 3, 26);
+
 -- --------------------------------------------------------
 
 --
@@ -255,6 +262,13 @@ CREATE TABLE `upload_tests` (
   `uploaded_file` text NOT NULL,
   `status` enum('in-review','correct','incorrect','reject') NOT NULL DEFAULT 'in-review'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `upload_tests`
+--
+
+INSERT INTO `upload_tests` (`id`, `student_id`, `teacher_id`, `test_id`, `uploaded_file`, `status`) VALUES
+(1, 5, 3, 13, 'std_test_5_Baqar.pdf', 'in-review');
 
 -- --------------------------------------------------------
 
@@ -367,7 +381,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `upload_assignments`
@@ -379,7 +393,7 @@ ALTER TABLE `upload_assignments`
 -- AUTO_INCREMENT for table `upload_tests`
 --
 ALTER TABLE `upload_tests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`

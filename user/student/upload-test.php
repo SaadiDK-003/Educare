@@ -70,7 +70,7 @@ if (isset($_GET['test_id']) && isset($_GET['teacher_id'])) {
                                     $fileName = 'std_test_' . $userID . '_' . basename($test_file["name"]);
                                     $targetFilePath = $targetDir . $fileName;
                                     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-                                    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+                                    $allowTypes = array('pdf', 'PDF');
 
                                     if (in_array($fileType, $allowTypes)) {
                                         if (move_uploaded_file($test_file["tmp_name"], $targetFilePath)) {
@@ -86,7 +86,7 @@ if (isset($_GET['test_id']) && isset($_GET['teacher_id'])) {
                                             }
                                         }
                                     } else {
-                                        $statusMsg = "<h5 class='text-center alert alert-danger'>Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.</h5>";
+                                        $statusMsg = "<h5 class='text-center alert alert-danger'>Sorry, only PDF file allowed to upload.</h5>";
                                     }
                                 } else {
                                     $statusMsg = "<h5 class='text-center alert alert-danger'>The file is empty.</h5>";

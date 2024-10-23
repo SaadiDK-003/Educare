@@ -183,11 +183,23 @@ if (is_loggedin() === false || $userRole == 'student') {
     </div>
 
 
+
+    <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-body bg-danger text-white">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
+
+
+
     <?php include_once '../includes/js_links.php'; ?>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
     <script>
         $(document).ready(function() {
+
             new DataTable('#example, #example1', {
                 ordering: false,
                 columns: [{
@@ -205,6 +217,8 @@ if (is_loggedin() === false || $userRole == 'student') {
                 }]
             });
 
+            // Update Test / Assignment
+
             $(document).on("click", '.btn-edit-test', function(e) {
                 e.preventDefault();
                 let test_id = $(this).data('id');
@@ -219,6 +233,47 @@ if (is_loggedin() === false || $userRole == 'student') {
                 $("input[name='upd_action']").val("asgmt_update");
             });
 
+
+            // DELETE Test or Assignment
+            $(document).on("click", '.btn-del-test', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '../ajax/delete.php',
+                    method: 'post',
+                    data: {
+                        test_del_id: id
+                    },
+                    success: function(response) {
+                        $('.toast').toast('show');
+                        $(".toast-body").html(response);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1800);
+                    }
+                })
+            });
+
+            $(document).on("click", '.btn-del-asgmt', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '../ajax/delete.php',
+                    method: 'post',
+                    data: {
+                        asgmt_del_id: id
+                    },
+                    success: function(response) {
+                        $('.toast').toast('show');
+                        $(".toast-body").html(response);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1800);
+                    }
+                })
+            });
+
+
             $("#upd-form").on('submit', function(e) {
                 e.preventDefault();
                 let formData = $(this).serialize();
@@ -229,6 +284,9 @@ if (is_loggedin() === false || $userRole == 'student') {
                     success: function(response) {
                         let res = JSON.parse(response);
                         $(".show-res").addClass(res.status).html(res.msg);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
                     }
                 });
             });

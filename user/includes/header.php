@@ -32,7 +32,7 @@
                             <img src="<?= SITE_URL ?>user/images/editprofile.png">
                             <p>Edit profile</p>
                         </a>
-                        <a href="<?= SITE_URL ?>user/testsettings.php" class="submenulink">
+                        <a class="d-none" href="<?= SITE_URL ?>user/testsettings.php" class="submenulink">
                             <img src="<?= SITE_URL ?>user/images/settings.png">
                             <p>Settings</p>
                         </a>

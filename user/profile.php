@@ -1,4 +1,11 @@
-<!--Website: wwww.codingdung.com-->
+<?php
+require_once '../core/database.php';
+
+if (!is_loggedin()) {
+  header('Location: login.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,11 +19,15 @@
 </head>
 
 <body id="profile-page">
-  <div class="container light-style flex-grow-1 container-p-y">
+  <?php include_once './includes/header.php'; ?>
+  <div class="container mt-3 mb-5">
     <h4 class="font-weight-bold py-3 mb-4">Account settings</h4>
     <div class="card overflow-hidden">
+      <?php if (isset($_POST['submit'])):
+        update_profile($_POST, $userID);
+      endif; ?>
       <div class="row no-gutters row-bordered row-border-light">
-        <div class="col-md-3 pt-0">
+        <div class="d-none col-md-3 pt-0">
           <div class="list-group list-group-flush account-settings-links">
             <a
               class="list-group-item list-group-item-action active"
@@ -44,53 +55,68 @@
               href="#account-notifications">Notifications</a>
           </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="tab-content">
             <div class="tab-pane fade active show" id="account-general">
-              <div class="card-body media align-items-center">
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                  alt
-                  class="d-block ui-w-80" />
-                <div class="media-body ml-4">
-                  <label class="btn btn-outline-primary">
-                    Upload new photo
-                    <input type="file" class="account-settings-fileinput" />
-                  </label>
-                  &nbsp;
-                  <button type="button" class="btn btn-default md-btn-flat">
-                    Reset
-                  </button>
-                  <div class="text-light small mt-1">
-                    Allowed JPG, GIF or PNG. Max size of 800K
+              <form action="" method="post">
+                <div class="card-body media align-items-center d-none">
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    alt
+                    class="d-block ui-w-80" />
+                  <div class="media-body ml-4">
+                    <label class="btn btn-outline-primary">
+                      Upload new photo
+                      <input type="file" class="account-settings-fileinput" />
+                    </label>
+                    &nbsp;
+                    <button type="button" class="btn btn-default md-btn-flat">
+                      Reset
+                    </button>
+                    <div class="text-light small mt-1">
+                      Allowed JPG, GIF or PNG. Max size of 800K
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr class="border-light m-0" />
-              <div class="card-body">
-                <div class="form-group">
-                  <label class="form-label">First name</label>
-                  <input type="text" class="form-control mb-1" value="" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Last name</label>
-                  <input type="text" class="form-control" value="" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">E-mail</label>
-                  <input type="text" class="form-control mb-1" value="" />
-                  <div class="alert alert-warning mt-3">
-                    Your email is not confirmed. Please check your inbox.<br />
-                    <a href="javascript:void(0)">Resend confirmation</a>
+                <hr class="border-light m-0" />
+                <div class="row card-body">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">First name <span class="text-danger">*</span></label>
+                      <input type="text" name="fname" class="form-control mb-1" value="<?= $userFirstName ?>" required />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Last name <span class="text-danger">*</span></label>
+                      <input type="text" name="lname" class="form-control" value="<?= $userLastName ?>" required />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">E-mail <span class="text-danger">*</span></label>
+                      <input type="email" name="email" class="form-control mb-1" value="<?= $userEmail ?>" required />
+                      <div class="d-none alert alert-warning mt-3">
+                        Your email is not confirmed. Please check your inbox.<br />
+                        <a href="javascript:void(0)">Resend confirmation</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" value="" />
+                      <input type="hidden" name="currentPwd" value="<?= $userPwd ?>">
+                    </div>
+                  </div>
+                  <div class="col-12 text-right mt-3">
+                    <button type="submit" name="submit" class="btn btn-primary">Save changes</button>&nbsp;
+                    <button type="button" class="btn btn-default">Cancel</button>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Level</label>
-                  <input type="text" class="form-control" value="" />
-                </div>
-              </div>
+              </form>
             </div>
-            <div class="tab-pane fade" id="account-change-password">
+            <!-- <div class="tab-pane fade" id="account-change-password">
               <div class="card-body pb-2">
                 <div class="form-group">
                   <label class="form-label">Current password</label>
@@ -280,17 +306,17 @@
                   </label>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
     </div>
-    <div class="text-right mt-3">
+    <div class="d-none text-right mt-3">
       <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
       <button type="button" class="btn btn-default">Cancel</button>
     </div>
   </div>
-
+  <?php include_once './includes/footer.php'; ?>
   <?php include_once './includes/js_links.php'; ?>
 </body>
 
